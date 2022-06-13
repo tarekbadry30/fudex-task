@@ -55,8 +55,8 @@
                 validationErrors:{},
                 uploadPercentage: 0,
                 activeSubmit:true,
-                nameRegex:/[\u0620-\u064A\040a-zA-Z ]+$/,
-                nameRegexEN:/^[a-zA-Z ]*$/,
+                nameRegex_AR_EN:/[\u0620-\u064A\040a-zA-Z ]+$/,
+                nameRegex_EN:/^[a-zA-Z ]*$/,
                 NationalRegex:/^\d+$/,
             }
         },
@@ -93,25 +93,21 @@
                 validate Name
                 */
                 if(this.name.trim().length<3)
-                    Vue.set(this.validationErrors,'name','Employer name min length 3 character')
-                //this.validationErrors.name='Employer name min length 3 character';
+                    Vue.set(this.validationErrors,'name','name min length 3 character')
                 else if(this.name.trim().length>50)
-                    Vue.set(this.validationErrors,'name','Employer name max length 50 character')
-                //this.validationErrors.name='Employer name max length 50 character';
-                else if(!this.name.match(this.nameRegex))
-                    Vue.set(this.validationErrors,'name','Employer name must contain only characters')
-                //this.validationErrors.name='Employer name must contain only characters';
+                    Vue.set(this.validationErrors,'name','name max length 50 character')
+                else if(!this.name.match(this.nameRegex_AR_EN))
+                    Vue.set(this.validationErrors,'name','name must contain only arabic and english characters')
                 else
                     Vue.delete(this.validationErrors,'name')
+
                 /*
                 validate National ID
                 */
                 if(this.national_id.trim().length!=11)
-                    Vue.set(this.validationErrors,'national_id','National ID must be 11 number')
-                //this.validationErrors.national_id='National ID must be 11 number';
+                    Vue.set(this.validationErrors,'national_id','national ID must be 11 number')
                 else if(!this.national_id.match(this.NationalRegex))
-                    Vue.set(this.validationErrors,'national_id','National ID must contain only numbers')
-                //this.validationErrors.national_id='National ID must contain only numbers';
+                    Vue.set(this.validationErrors,'national_id','national ID must contain only numbers')
                 else
                     Vue.delete(this.validationErrors,'national_id')
 
@@ -158,9 +154,19 @@
                             this.validationErrors=error.response.data.errors;
                             this.fireErrorValidation();
                         }else{
+                            this.fireErrorOnServer();
                             console.log(error.response.data);
                         }
                     }
+                })
+            },
+            fireErrorOnServer() {
+                this.uploadPercentage=0;
+                Swal.fire({
+                    title:'Server Validation',
+                    text:'error happen on server, we are fixing it, try again later',
+                    //timer:1100,
+                    icon:"error"
                 })
             },
             fireErrorValidation() {

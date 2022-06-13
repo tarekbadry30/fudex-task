@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use App\Models\Employee;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class UniqueNationalID implements Rule
 {
@@ -26,7 +26,7 @@ class UniqueNationalID implements Rule
      */
     public function passes($attribute, $value)
     {
-         $count= Employee::where([
+        $count=DB::table('employees')->where([
             ['national_id',$value],
             ['active',true],
         ])->count();
@@ -40,6 +40,6 @@ class UniqueNationalID implements Rule
      */
     public function message()
     {
-        return 'The national id has been taken with active employee';
+        return 'The national ID has been taken with active employee';
     }
 }

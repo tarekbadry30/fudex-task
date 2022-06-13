@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 trait RequestValidationTrait
 {
+    //concat validation errors in unique single $key => $value
     protected function failedValidation(Validator $validator)
     {
         if ($this->expectsJson()) {

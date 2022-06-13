@@ -5422,8 +5422,8 @@ __webpack_require__.r(__webpack_exports__);
       validationErrors: {},
       uploadPercentage: 0,
       activeSubmit: true,
-      nameRegex: /[\u0620-\u064A\040a-zA-Z ]+$/,
-      nameRegexEN: /^[a-zA-Z ]*$/,
+      nameRegex_AR_EN: /[\u0620-\u064A\040a-zA-Z ]+$/,
+      nameRegex_EN: /^[a-zA-Z ]*$/,
       NationalRegex: /^\d+$/
     };
   },
@@ -5458,17 +5458,12 @@ __webpack_require__.r(__webpack_exports__);
       /*
       validate Name
       */
-      if (this.name.trim().length < 3) Vue.set(this.validationErrors, 'name', 'Employer name min length 3 character'); //this.validationErrors.name='Employer name min length 3 character';
-      else if (this.name.trim().length > 50) Vue.set(this.validationErrors, 'name', 'Employer name max length 50 character'); //this.validationErrors.name='Employer name max length 50 character';
-      else if (!this.name.match(this.nameRegex)) Vue.set(this.validationErrors, 'name', 'Employer name must contain only characters'); //this.validationErrors.name='Employer name must contain only characters';
-      else Vue["delete"](this.validationErrors, 'name');
+      if (this.name.trim().length < 3) Vue.set(this.validationErrors, 'name', 'name min length 3 character');else if (this.name.trim().length > 50) Vue.set(this.validationErrors, 'name', 'name max length 50 character');else if (!this.name.match(this.nameRegex_AR_EN)) Vue.set(this.validationErrors, 'name', 'name must contain only arabic and english characters');else Vue["delete"](this.validationErrors, 'name');
       /*
       validate National ID
       */
 
-      if (this.national_id.trim().length != 11) Vue.set(this.validationErrors, 'national_id', 'National ID must be 11 number'); //this.validationErrors.national_id='National ID must be 11 number';
-      else if (!this.national_id.match(this.NationalRegex)) Vue.set(this.validationErrors, 'national_id', 'National ID must contain only numbers'); //this.validationErrors.national_id='National ID must contain only numbers';
-      else Vue["delete"](this.validationErrors, 'national_id');
+      if (this.national_id.trim().length != 11) Vue.set(this.validationErrors, 'national_id', 'national ID must be 11 number');else if (!this.national_id.match(this.NationalRegex)) Vue.set(this.validationErrors, 'national_id', 'national ID must contain only numbers');else Vue["delete"](this.validationErrors, 'national_id');
       return Object.keys(this.validationErrors).length < 1;
     },
     submitForm: function submitForm() {
@@ -5518,9 +5513,20 @@ __webpack_require__.r(__webpack_exports__);
 
             _this.fireErrorValidation();
           } else {
+            _this.fireErrorOnServer();
+
             console.log(error.response.data);
           }
         }
+      });
+    },
+    fireErrorOnServer: function fireErrorOnServer() {
+      this.uploadPercentage = 0;
+      sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
+        title: 'Server Validation',
+        text: 'error happen on server, we are fixing it, try again later',
+        //timer:1100,
+        icon: "error"
       });
     },
     fireErrorValidation: function fireErrorValidation() {
@@ -5528,7 +5534,7 @@ __webpack_require__.r(__webpack_exports__);
       sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
         title: 'Error Validation',
         text: 'please solve validation errors',
-        timer: 800,
+        timer: 1100,
         icon: "error"
       });
     },
@@ -5545,7 +5551,7 @@ __webpack_require__.r(__webpack_exports__);
       sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
         title: 'Inserted Success',
         text: 'New Employer Created',
-        timer: 800,
+        timer: 1100,
         icon: "success"
       });
     }
